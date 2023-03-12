@@ -1,0 +1,46 @@
+
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.Random;
+
+public class CoinFlipPlugin extends JavaPlugin {
+
+private Random random = new Random();
+
+@Override
+public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    if (!(sender instanceof Player)) {
+        sender.sendMessage("Only players can use this command!");
+        return true;
+    }
+    
+    Player player = (Player) sender;
+    if (args.length < 1) {
+        player.sendMessage(ChatColor.RED + "Usage: /coinflip <heads/tails>");
+        return true;
+    }
+    
+    String choice = args[0].toLowerCase();
+    if (!choice.equals("heads") && !choice.equals("tails")) {
+        player.sendMessage(ChatColor.RED + "Invalid choice. Please choose either 'heads' or 'tails'.");
+        return true;
+    }
+    
+    boolean isHeads = random.nextBoolean();
+    String result = isHeads ? "heads" : "tails";
+    player.sendMessage(ChatColor.GOLD + "You flipped " + result + "!");
+    
+    if (choice.equals(result)) {
+        player.sendMessage(ChatColor.GREEN + "Congratulations, you won!");
+    } else {
+        player.sendMessage(ChatColor.RED + "Sorry, you lost.");
+    }
+    
+    return true;
+}
+}
+
